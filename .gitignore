@@ -32,5 +32,10 @@ Thumbs.db
 
 # PySpark / Java
 derby.log
+*.log
 metastore_db/
 spark-warehouse/
+
+# PySpark venv artifacts
+share/
+*.egg-info/
