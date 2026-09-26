@@ -1,0 +1,44 @@
+CLINICAL CASE SUMMARY
+
+Patient Reference: CASE-2024-0047
+Date of Admission: April 10, 2024
+Attending Physician: Dr. Eleanor Voss, MD
+Department: Internal Medicine
+
+CHIEF COMPLAINT
+The patient, a 58-year-old male, presented with a three-week history of progressive shortness
+of breath, mild chest discomfort, and bilateral lower-extremity edema.
+
+HISTORY OF PRESENT ILLNESS
+The patient reports gradual onset of dyspnea on exertion over the past three weeks, now
+occurring at rest. He denies fever, chills, or productive cough. He has a known history of
+hypertension and type 2 diabetes mellitus, managed with lisinopril 10 mg daily and metformin
+500 mg twice daily. He is a former smoker with a 20-pack-year history, having quit six years ago.
+
+PHYSICAL EXAMINATION
+- Vital Signs: BP 148/92 mmHg, HR 96 bpm, RR 20/min, SpO2 91% on room air, Temp 37.1°C
+- Cardiovascular: Regular rate and rhythm, S3 gallop present, JVD noted at 45 degrees
+- Respiratory: Bibasilar crackles on auscultation
+- Extremities: 2+ pitting edema bilateral ankles
+
+INVESTIGATIONS
+- ECG: Sinus tachycardia, left bundle branch block (new compared to prior ECG from 2022)
+- Chest X-Ray: Cardiomegaly, bilateral pleural effusions, pulmonary vascular congestion
+- BNP: 1,840 pg/mL (elevated)
+- Echocardiogram: Ejection fraction 32%, global hypokinesis, dilated left ventricle
+
+ASSESSMENT AND PLAN
+Primary Diagnosis: Acute decompensated heart failure (HFrEF), NYHA Class III
+Secondary Diagnosis: Hypertension, Type 2 Diabetes Mellitus
+
+Management:
+1. IV furosemide 40 mg twice daily for diuresis; monitor daily weights and fluid balance
+2. Initiate carvedilol 3.125 mg twice daily; uptitrate as tolerated
+3. Continue lisinopril; consider uptitration after stabilisation
+4. Cardiology consult requested
+5. Diabetic diet; endocrinology review for glycaemic optimisation
+6. Patient education regarding fluid restriction and daily weight monitoring
+
+PROGNOSIS
+Guarded. Patient will require close outpatient follow-up and optimisation of guideline-directed
+medical therapy. Referral for cardiac rehabilitation to be considered at discharge.

@@ -1,0 +1,43 @@
+SERVICE AGREEMENT
+
+This Service Agreement ("Agreement") is entered into as of January 15, 2024, between Acme Legal
+Solutions LLC ("Service Provider") and Brightfield Enterprises Inc. ("Client").
+
+1. SCOPE OF SERVICES
+   The Service Provider agrees to deliver software consulting services as outlined in Schedule A
+   attached hereto. Services shall commence on February 1, 2024, and continue for a period of
+   twelve (12) months unless terminated earlier in accordance with Section 7.
+
+2. PAYMENT TERMS
+   The Client shall pay the Service Provider a monthly retainer of five thousand dollars ($5,000),
+   due on the first business day of each calendar month. Late payments shall accrue interest at
+   a rate of 1.5% per month.
+
+3. CONFIDENTIALITY
+   Both parties agree to maintain strict confidentiality regarding all proprietary information
+   disclosed during the term of this Agreement. This obligation survives termination for a period
+   of three (3) years.
+
+4. INTELLECTUAL PROPERTY
+   All deliverables produced under this Agreement shall remain the exclusive property of the
+   Client upon full payment. The Service Provider retains the right to use general methodologies
+   and non-proprietary tools developed during the engagement.
+
+5. LIMITATION OF LIABILITY
+   In no event shall either party be liable for indirect, incidental, or consequential damages
+   arising out of or related to this Agreement, even if advised of the possibility of such damages.
+
+6. GOVERNING LAW
+   This Agreement shall be governed by the laws of the State of New York, without regard to its
+   conflict of law provisions.
+
+7. TERMINATION
+   Either party may terminate this Agreement with thirty (30) days written notice. Upon termination,
+   the Client shall pay for all services rendered up to the termination date.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+Acme Legal Solutions LLC                    Brightfield Enterprises Inc.
+By: ___________________________             By: ___________________________
+Name: Jonathan R. Mercer                    Name: Sandra L. Whitfield
+Title: Managing Director                    Title: Chief Executive Officer

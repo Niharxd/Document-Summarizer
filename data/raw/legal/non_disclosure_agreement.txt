@@ -1,0 +1,45 @@
+NON-DISCLOSURE AGREEMENT
+
+This Non-Disclosure Agreement ("NDA") is made effective as of March 3, 2024, between
+Nexus Innovations Ltd. ("Disclosing Party") and Orion Consulting Group ("Receiving Party").
+
+RECITALS
+The Disclosing Party possesses certain confidential and proprietary information relating to
+its product roadmap, source code, and business strategies ("Confidential Information").
+The Receiving Party wishes to evaluate a potential business partnership and may receive
+Confidential Information in the course of such evaluation.
+
+1. DEFINITION OF CONFIDENTIAL INFORMATION
+   Confidential Information includes all technical data, trade secrets, know-how, research,
+   product plans, customer lists, financial information, and any other information designated
+   as confidential by the Disclosing Party in writing.
+
+2. OBLIGATIONS OF RECEIVING PARTY
+   The Receiving Party agrees to:
+   (a) Hold all Confidential Information in strict confidence;
+   (b) Not disclose Confidential Information to any third party without prior written consent;
+   (c) Use Confidential Information solely for the purpose of evaluating the potential partnership;
+   (d) Limit access to Confidential Information to employees with a need-to-know basis.
+
+3. EXCLUSIONS
+   This Agreement does not apply to information that:
+   (a) Is or becomes publicly available through no fault of the Receiving Party;
+   (b) Was rightfully known to the Receiving Party prior to disclosure;
+   (c) Is independently developed by the Receiving Party without use of Confidential Information.
+
+4. TERM
+   This Agreement shall remain in effect for two (2) years from the effective date.
+
+5. RETURN OF INFORMATION
+   Upon request, the Receiving Party shall promptly return or destroy all Confidential Information
+   and certify such destruction in writing.
+
+6. REMEDIES
+   The Receiving Party acknowledges that breach of this Agreement may cause irreparable harm
+   and that monetary damages may be insufficient. The Disclosing Party shall be entitled to seek
+   equitable relief, including injunction, in addition to all other remedies available at law.
+
+Nexus Innovations Ltd.                      Orion Consulting Group
+By: ___________________________             By: ___________________________
+Name: Patricia A. Donovan                   Name: Marcus T. Ellison
+Title: Chief Technology Officer             Title: Partner

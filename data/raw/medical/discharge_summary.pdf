@@ -1,0 +1,101 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 612 792 ]
+/Parent 2 0 R
+/Contents <<
+/Length 1869
+>>
+stream
+BT
+/F1 10 Tf
+40 750 Td
+12 TL
+(HOSPITAL DISCHARGE SUMMARY) Tj T*
+() Tj T*
+(HOSPITAL DISCHARGE SUMMARY) Tj T*
+() Tj T*
+(Patient Reference: DISCH-2024-0112) Tj T*
+(Admission Date: May 5, 2024) Tj T*
+(Discharge Date: May 9, 2024) Tj T*
+(Attending Physician: Dr. Samuel Okafor, MD) Tj T*
+(Ward: General Surgery) Tj T*
+() Tj T*
+(REASON FOR ADMISSION) Tj T*
+(The patient, a 34-year-old female, was admitted with acute right iliac fossa pain, nausea,) Tj T*
+(and low-grade fever consistent with acute appendicitis.) Tj T*
+() Tj T*
+(INVESTIGATIONS ON ADMISSION) Tj T*
+(- WBC: 14.2 x10^9/L \(elevated\)) Tj T*
+(- CRP: 87 mg/L \(elevated\)) Tj T*
+(- Ultrasound abdomen: Non-compressible appendix, diameter 9mm, periappendiceal fat stranding) Tj T*
+(- CT abdomen/pelvis: Confirmed acute appendicitis, no perforation or abscess) Tj T*
+() Tj T*
+(PROCEDURE PERFORMED) Tj T*
+(Laparoscopic appendicectomy performed on May 6, 2024 under general anaesthesia.) Tj T*
+(Operative findings: Acutely inflamed appendix, no perforation. Procedure uncomplicated.) Tj T*
+(Specimen sent for histopathology.) Tj T*
+() Tj T*
+(POSTOPERATIVE COURSE) Tj T*
+(The patient recovered well. Oral intake resumed on postoperative day 1. Pain managed with) Tj T*
+(paracetamol and ibuprofen. No wound complications. Afebrile at discharge.) Tj T*
+() Tj T*
+(DISCHARGE MEDICATIONS) Tj T*
+(1. Paracetamol 1g every 6 hours as needed for 5 days) Tj T*
+(2. Ibuprofen 400mg every 8 hours with food for 3 days) Tj T*
+(3. No antibiotics required \(uncomplicated case\)) Tj T*
+() Tj T*
+(FOLLOW-UP INSTRUCTIONS) Tj T*
+(- Review with GP in 1 week for wound check) Tj T*
+(- Return to emergency if fever >38.5C, increasing pain, or wound discharge) Tj T*
+(- Histopathology results to be reviewed at outpatient appointment in 2 weeks) Tj T*
+(- Avoid strenuous activity for 2 weeks; may return to desk work after 5 days) Tj T*
+ET
+endstream
+>>
+endobj
+xref
+0 5
+0000000000 65535 f 
+0000000015 00000 n 
+0000000054 00000 n 
+0000000113 00000 n 
+0000000162 00000 n 
+trailer
+<<
+/Size 5
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+2243
+%%EOF

@@ -17,7 +17,11 @@ __pycache__/
 
 # Generated / processed data
 data/processed/
-data/raw/
+# data/raw/ corpus files (.txt, .pdf, .docx) are intentionally tracked
+# Ignore only generated/temporary files that may appear in raw/
+data/raw/**/*.csv
+data/raw/**/*.json
+data/raw/**/*.parquet
 
 # Jupyter
 .ipynb_checkpoints/

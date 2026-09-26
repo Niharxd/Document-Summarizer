@@ -31,7 +31,8 @@ review and rate summaries. Grafana dashboards visualize service health and quali
 
 ## Project Status
 
-**Environment verified.** Virtual environment created, all dependencies installed, and PySpark smoke test passing.
+**Stage 3 complete.** Sample corpus created (9 documents across 3 domains), document ingestion
+utilities implemented, and all 8 ingestion tests passing.
 Development will proceed module by module.
 
 ## Setup
@@ -91,6 +92,63 @@ Expected output:
 |  2|Spark|
 +---+-----+
 PySpark smoke test PASSED.
+```
+
+## Sample Corpus
+
+The sample corpus lives under `data/raw/` organised by domain:
+
+```
+data/raw/
+├── legal/
+│   ├── service_agreement.txt
+│   ├── employment_contract.pdf
+│   └── lease_agreement.docx
+├── medical/
+│   ├── clinical_case_summary.txt
+│   ├── discharge_summary.pdf
+│   └── research_abstract.docx
+└── technical/
+    ├── system_architecture_report.txt
+    ├── api_specification.pdf
+    └── ml_evaluation_report.docx
+```
+
+All documents are fictional and contain no real personal or patient information.
+
+### Supported File Types
+
+| Extension | Parser |
+|-----------|--------|
+| `.txt`    | Built-in `pathlib` |
+| `.pdf`    | `pypdf` |
+| `.docx`   | `python-docx` |
+
+## Document Ingestion
+
+The ingestion layer lives in `app/document_loader.py` and exposes:
+
+- `discover_documents(root)` — recursively finds all `.txt`, `.pdf`, `.docx` files
+- `extract_text(path)` — dispatches to the correct parser by file extension
+- `detect_domain(path, root)` — infers domain from the immediate subfolder name
+- `load_document(path, root)` — returns a single structured record
+- `load_all_documents(root)` — discovers and loads every document under `root`
+
+Each record contains:
+```python
+{
+    "document_id": "<uuid>",
+    "filename":    "service_agreement.txt",
+    "file_type":   "txt",
+    "domain":      "legal",
+    "text":        "..."
+}
+```
+
+### Run ingestion tests
+
+```bash
+.venv\Scripts\python.exe -m pytest tests/test_document_loader.py -v
 ```
 
 ## API Key Security
