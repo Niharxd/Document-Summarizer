@@ -31,8 +31,9 @@ review and rate summaries. Grafana dashboards visualize service health and quali
 
 ## Project Status
 
-**Stage 3 complete.** Sample corpus created (9 documents across 3 domains), document ingestion
-utilities implemented, and all 8 ingestion tests passing.
+**Stage 4 complete.** PySpark ETL pipeline implemented. Processes 10 documents across 3 domains,
+applying text cleaning, entity extraction, coherence scoring, and summary-length ratio. Output
+written to `data/processed/etl_output.parquet`. All 34 tests passing.
 Development will proceed module by module.
 
 ## Setup
@@ -40,23 +41,52 @@ Development will proceed module by module.
 ### Prerequisites
 
 - Python 3.13
-- Java JDK 8, 11, or 17 (required by PySpark)
+- Java JDK 11, 17, or 22 (required by PySpark)
+- Hadoop `winutils.exe` for Windows (required for Parquet/file writes)
 
 ### Windows — Required Environment Variables
 
-PySpark requires Java. Set these in your Windows System Environment Variables
-(or in your terminal session before running anything):
+PySpark on Windows requires Java and Hadoop `winutils.exe`. Set these permanently via
+**"Edit the system environment variables"** in Windows System Properties:
+
+| Variable | Correct value | Common mistake |
+|---|---|---|
+| `JAVA_HOME` | `C:\Program Files\Java\jdk-22` | Do NOT include `\bin` at the end |
+| `HADOOP_HOME` | `C:\hadoop` | Must contain `bin\winutils.exe` |
+
+Also add `%HADOOP_HOME%\bin` to your system `PATH`.
+
+> **Important (Windows):** `C:\hadoop\bin` must be on `PATH` — not just `HADOOP_HOME` set — at the
+> time PySpark is invoked. `HADOOP_HOME` tells Spark where to find `winutils.exe`, but the JVM
+> loads `hadoop.dll` via the OS `PATH`. If `C:\hadoop\bin` is missing from `PATH` you will get
+> `UnsatisfiedLinkError: NativeIO$Windows.access0` when writing Parquet files.
 
 ```powershell
-# Point to your JDK root directory — NOT the bin folder
-$env:JAVA_HOME = "C:\path\to\your\jdk"   # e.g. C:\Program Files\Java\jdk-17
-
-# Optional: tell PySpark which Python to use when running locally
-$env:PYSPARK_PYTHON = ".venv\Scripts\python.exe"
+# Verify your setup in PowerShell:
+Test-Path "$env:JAVA_HOME\bin\java.exe"          # must return True
+Test-Path "$env:HADOOP_HOME\bin\winutils.exe"    # must return True
+Test-Path "$env:HADOOP_HOME\bin\hadoop.dll"      # must return True
+([System.Environment]::GetEnvironmentVariable('PATH','Machine')) -split ';' | Select-String 'hadoop'  # must show C:\hadoop\bin
 ```
 
-To set these permanently, search for **"Edit the system environment variables"** in Windows,
-then add `JAVA_HOME` under System Variables.
+### Windows — Hadoop winutils setup (one-time)
+
+PySpark 4.x bundles Hadoop 3.5.0. The closest compatible `winutils.exe` is from Hadoop 3.3.6
+(forward-compatible for local filesystem operations):
+
+```powershell
+# Create the directory
+New-Item -ItemType Directory -Force -Path C:\hadoop\bin
+
+# Download winutils.exe and hadoop.dll
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cdarlint/winutils/master/hadoop-3.3.6/bin/winutils.exe' -OutFile 'C:\hadoop\bin\winutils.exe'
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cdarlint/winutils/master/hadoop-3.3.6/bin/hadoop.dll' -OutFile 'C:\hadoop\bin\hadoop.dll'
+
+# Then set HADOOP_HOME=C:\hadoop in Windows System Environment Variables
+# and add C:\hadoop\bin to PATH
+```
+
+Source: https://github.com/cdarlint/winutils (community-maintained Windows Hadoop binaries)
 
 ### Installation
 
@@ -72,7 +102,10 @@ py -3.13 -m venv .venv
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Configure environment variables
+# 4. Download required NLTK corpora (one-time, needed by TextBlob)
+.venv\Scripts\python.exe setup_nltk.py
+
+# 5. Configure environment variables
 copy .env.example .env
 # Edit .env and add your Cohere API key
 ```
@@ -123,6 +156,50 @@ All documents are fictional and contain no real personal or patient information.
 | `.txt`    | Built-in `pathlib` |
 | `.pdf`    | `pypdf` |
 | `.docx`   | `python-docx` |
+
+## ETL Pipeline
+
+The ETL pipeline lives in `etl/` and is composed of two modules:
+
+- `etl/transformations.py` — pure Python functions (no Spark dependency): `clean_text`,
+  `document_length`, `extract_dates`, `extract_proper_nouns`, `coherence_score`,
+  `summary_length_ratio`, `processing_timestamp`
+- `etl/pipeline.py` — registers UDFs, builds the Spark DataFrame, applies all transformations,
+  and writes Parquet output to `data/processed/etl_output.parquet`
+
+Transformations applied per document:
+
+| Column | Description |
+|--------|-------------|
+| `document_length` | Word count of raw text |
+| `cleaned_text` | Whitespace/control-char normalised text |
+| `dates` | Dates extracted via regex (ISO, slash, month-name formats) |
+| `proper_nouns` | Capitalised-word heuristic (regex, capped at 50) |
+| `extracted_entities` | `dates` + `proper_nouns` joined as a single string |
+| `coherence_score` | Lexical diversity (unique words / total words) |
+| `summary_length_to_document_length_ratio` | Placeholder `0.0` until Cohere stage |
+| `processed_at` | UTC timestamp of the pipeline run |
+
+> `generate_corpus.py` in `data/raw/` is intentionally excluded — only `.txt`, `.pdf`, and `.docx`
+> files are ingested.
+
+### Run the ETL pipeline
+
+```powershell
+# Windows — all env vars must be set in the same shell invocation
+$env:JAVA_HOME='C:\Program Files\Java\jdk-22'
+$env:HADOOP_HOME='C:\hadoop'
+$env:PATH='C:\hadoop\bin;' + $env:PATH
+$env:PYSPARK_PYTHON='.venv\Scripts\python.exe'
+$env:PYSPARK_DRIVER_PYTHON='.venv\Scripts\python.exe'
+.venv\Scripts\python.exe -m etl.pipeline
+```
+
+### Run ETL tests
+
+```powershell
+.venv\Scripts\python.exe -m pytest tests/test_etl.py -v
+```
 
 ## Document Ingestion
 
