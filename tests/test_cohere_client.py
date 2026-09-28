@@ -62,6 +62,30 @@ class TestBuildDomainPrompt:
         assert "architecture" in prompt.lower()
         assert "System design doc." in prompt
 
+    @pytest.mark.parametrize(
+        ("domain", "required_terms"),
+        [
+            ("legal", ("clauses", "obligations", "rights", "payment terms", "confidentiality", "liability", "termination", "governing law")),
+            ("medical", ("diagnosis", "findings", "treatment", "observations", "clinical conclusions")),
+            ("technical", ("architecture", "methods", "findings", "evaluation results", "technical conclusions")),
+        ],
+    )
+    def test_prompt_covers_domain_focus(self, domain, required_terms):
+        prompt = self.build("Source content.", domain).lower()
+        for term in required_terms:
+            assert term in prompt
+
+    def test_prompt_requests_concise_grounded_summary(self):
+        prompt = self.build("Source content.", "legal").lower()
+
+        assert "only information stated in the source" in prompt
+        assert "do not invent facts" in prompt
+        assert "repeat it unnecessarily" in prompt
+        assert "substantially shorter than the source" in prompt
+        assert "20–40%" in prompt
+        assert "very short documents" in prompt
+        assert "return only the summary" in prompt
+
     def test_prompt_includes_document_text(self):
         text = "Unique marker 12345"
         for domain in ("legal", "medical", "technical"):

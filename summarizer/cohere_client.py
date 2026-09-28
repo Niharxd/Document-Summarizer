@@ -18,16 +18,19 @@ MODEL = "command-a-plus-05-2026"
 
 _DOMAIN_INSTRUCTIONS: dict[str, str] = {
     "legal": (
-        "Summarize the following legal document. "
-        "Focus on important clauses, obligations, rights, and conditions."
+        "Summarize this legal document concisely. Focus on important clauses, "
+        "obligations, rights, payment terms, confidentiality, liability, "
+        "termination, and governing law. Include only points present in the source."
     ),
     "medical": (
-        "Summarize the following medical document. "
-        "Focus on diagnosis, findings, treatment, and important observations."
+        "Summarize this medical document concisely. Focus on diagnosis, important "
+        "findings, treatment, observations, and relevant clinical conclusions. "
+        "Include only points present in the source."
     ),
     "technical": (
-        "Summarize the following technical document. "
-        "Focus on architecture, methods, findings, and technical conclusions."
+        "Summarize this technical document concisely. Focus on architecture, "
+        "methods, important findings, evaluation results, and technical conclusions. "
+        "Include only points present in the source."
     ),
 }
 
@@ -65,7 +68,16 @@ def build_domain_prompt(document_text: str, domain: str) -> str:
             f"Choose from: {sorted(SUPPORTED_DOMAINS)}"
         )
     instruction = _DOMAIN_INSTRUCTIONS[domain]
-    return f"{instruction}\n\n{document_text.strip()}"
+    concise_requirements = (
+        "Use only information stated in the source; do not invent facts, repeat it "
+        "unnecessarily, add explanations about the document, or expand it into a "
+        "longer response. Keep the result substantially shorter than the source "
+        "whenever possible. When practical, aim for approximately 20–40% of the "
+        "source word count; use judgment for very short documents rather than "
+        "forcing an artificial ratio. Keep the summary focused and readable. "
+        "Return only the summary."
+    )
+    return f"{instruction}\n{concise_requirements}\n\nSource document:\n{document_text.strip()}"
 
 
 def generate_summary(document_text: str, domain: str) -> str:
