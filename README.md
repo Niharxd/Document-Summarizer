@@ -31,9 +31,8 @@ review and rate summaries. Grafana dashboards visualize service health and quali
 
 ## Project Status
 
-**Stage 4 complete.** PySpark ETL pipeline implemented. Processes 10 documents across 3 domains,
-applying text cleaning, entity extraction, coherence scoring, and summary-length ratio. Output
-written to `data/processed/etl_output.parquet`. All 34 tests passing.
+**Stage 5 complete.** Cohere summarization client implemented. Domain-aware prompts for legal,
+medical, and technical documents. All 48 tests passing.
 Development will proceed module by module.
 
 ## Setup
@@ -226,6 +225,43 @@ Each record contains:
 
 ```bash
 .venv\Scripts\python.exe -m pytest tests/test_document_loader.py -v
+```
+
+## Cohere Summarizer
+
+The summarization layer lives in `summarizer/cohere_client.py` and exposes:
+
+- `get_cohere_client()` — returns a cached `cohere.ClientV2` instance; raises `ValueError` if
+  `COHERE_API_KEY` is missing
+- `build_domain_prompt(document_text, domain)` — returns the full prompt string for the given domain
+- `generate_summary(document_text, domain)` — calls the Cohere Chat API and returns the summary
+
+Supported domains and prompt focus:
+
+| Domain | Prompt focus |
+|--------|--------------|
+| `legal` | Important clauses, obligations, rights, conditions |
+| `medical` | Diagnosis, findings, treatment, important observations |
+| `technical` | Architecture, methods, findings, technical conclusions |
+
+Model used: `command-a-plus-05-2026`
+
+### Cohere setup
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   copy .env.example .env
+   ```
+2. Open `.env` and replace the placeholder with your real key:
+   ```
+   COHERE_API_KEY=your_cohere_api_key_here
+   ```
+3. Get a free API key at https://dashboard.cohere.com/api-keys
+
+### Run summarizer tests
+
+```bash
+.venv\Scripts\python.exe -m pytest tests/test_cohere_client.py -v
 ```
 
 ## API Key Security
