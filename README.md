@@ -264,6 +264,17 @@ Model used: `command-a-plus-05-2026`
 .venv\Scripts\python.exe -m pytest tests/test_cohere_client.py -v
 ```
 
+## Gradio Interface
+
+Launch the document summarization interface from the project root:
+
+```bash
+python app/gradio_app.py
+```
+
+Upload a TXT, PDF, or DOCX file, select its domain, and click **Generate Summary**. The 1–5
+rating is captured in the interface; feedback persistence is not implemented yet.
+
 ## API Key Security
 
 - Copy `.env.example` to `.env` and add your `COHERE_API_KEY`.
