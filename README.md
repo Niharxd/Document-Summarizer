@@ -275,6 +275,19 @@ python app/gradio_app.py
 Upload a TXT, PDF, or DOCX file, select its domain, and click **Generate Summary**. The 1–5
 rating is captured in the interface; feedback persistence is not implemented yet.
 
+## Grafana CSV Dashboard
+
+Generate the Grafana-ready CSV exports first, then start the local file server:
+
+```bash
+python grafana/export_metrics.py
+python grafana/serve.py
+```
+
+In Grafana, configure the Infinity data source and import `grafana/dashboard.json`. The dashboard
+requests the CSV exports from `http://localhost:8000/`; keep the local server running while using
+the dashboard.
+
 ## API Key Security
 
 - Copy `.env.example` to `.env` and add your `COHERE_API_KEY`.

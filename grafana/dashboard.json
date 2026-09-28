@@ -1,0 +1,201 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_INFINITY",
+      "label": "Infinity",
+      "description": "Select the configured Infinity data source after import.",
+      "type": "datasource",
+      "pluginId": "yesoreyeram-infinity-datasource",
+      "pluginName": "Infinity"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Summary service metrics from the project's Grafana CSV exports. Configure an Infinity data source on import. CSV URLs assume the generated data/processed/grafana directory is served at http://localhost:8000 (for example, with Python's local HTTP server).",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "id": 1,
+      "type": "barchart",
+      "title": "Documents processed per day",
+      "description": "Count of ETL documents grouped by processing date.",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+          "type": "csv",
+          "source": "url",
+          "url": "http://localhost:8000/documents_per_day.csv",
+          "parser": "backend",
+          "format": "table",
+          "root_selector": "",
+          "columns": [
+            { "selector": "date", "text": "date", "type": "string" },
+            { "selector": "documents_processed", "text": "documents_processed", "type": "number" }
+          ],
+          "filters": [],
+          "csv_options": { "delimiter": ",", "skip_empty_lines": true },
+          "url_options": { "method": "GET", "data": "" },
+          "global_query_id": ""
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" } }, "overrides": [] },
+      "options": { "xField": "date", "orientation": "auto", "showValue": "auto", "stacking": "none", "groupWidth": 0.7, "barWidth": 0.97 }
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Average processing time",
+      "description": "Daily average summarization time, split by domain.",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+          "type": "csv",
+          "source": "url",
+          "url": "http://localhost:8000/processing_time.csv",
+          "parser": "backend",
+          "format": "timeseries",
+          "root_selector": "",
+          "columns": [
+            { "selector": "date", "text": "date", "type": "timestamp", "timestampFormat": "YYYY-MM-DD" },
+            { "selector": "domain", "text": "domain", "type": "string" },
+            { "selector": "average_processing_time_seconds", "text": "average_processing_time_seconds", "type": "number" }
+          ],
+          "filters": [],
+          "csv_options": { "delimiter": ",", "skip_empty_lines": true },
+          "url_options": { "method": "GET", "data": "" },
+          "global_query_id": ""
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s", "color": { "mode": "palette-classic" }, "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10, "showPoints": "auto" } }, "overrides": [] },
+      "options": { "tooltip": { "mode": "multi", "sort": "none" }, "legend": { "showLegend": true, "displayMode": "list", "placement": "bottom", "calcs": [] } }
+    },
+    {
+      "id": 3,
+      "type": "table",
+      "title": "Summary length and summary-to-document ratio",
+      "description": "Daily and domain averages from generated summaries.",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
+      "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+          "type": "csv",
+          "source": "url",
+          "url": "http://localhost:8000/summary_lengths.csv",
+          "parser": "backend",
+          "format": "table",
+          "root_selector": "",
+          "columns": [
+            { "selector": "date", "text": "date", "type": "string" },
+            { "selector": "domain", "text": "domain", "type": "string" },
+            { "selector": "average_document_length", "text": "average_document_length", "type": "number" },
+            { "selector": "average_summary_length", "text": "average_summary_length", "type": "number" },
+            { "selector": "average_summary_length_to_document_length_ratio", "text": "average_summary_length_to_document_length_ratio", "type": "number" },
+            { "selector": "summaries", "text": "summaries", "type": "number" }
+          ],
+          "filters": [],
+          "csv_options": { "delimiter": ",", "skip_empty_lines": true },
+          "url_options": { "method": "GET", "data": "" },
+          "global_query_id": ""
+        }
+      ],
+      "fieldConfig": { "defaults": { "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false } }, "overrides": [] },
+      "options": { "showHeader": true, "cellHeight": "sm", "footer": { "show": false, "reducer": ["sum"], "countRows": false, "fields": "" }, "sortBy": [] }
+    },
+    {
+      "id": 4,
+      "type": "barchart",
+      "title": "Average quality rating by domain",
+      "description": "Average submitted 1–5 feedback rating by domain.",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 9 },
+      "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+          "type": "csv",
+          "source": "url",
+          "url": "http://localhost:8000/ratings_by_domain.csv",
+          "parser": "backend",
+          "format": "table",
+          "root_selector": "",
+          "columns": [
+            { "selector": "domain", "text": "domain", "type": "string" },
+            { "selector": "average_rating", "text": "average_rating", "type": "number" },
+            { "selector": "feedback_count", "text": "feedback_count", "type": "number" }
+          ],
+          "filters": [],
+          "csv_options": { "delimiter": ",", "skip_empty_lines": true },
+          "url_options": { "method": "GET", "data": "" },
+          "global_query_id": ""
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "min": 1, "max": 5, "color": { "mode": "palette-classic" } }, "overrides": [] },
+      "options": { "xField": "domain", "orientation": "horizontal", "showValue": "auto", "stacking": "none", "groupWidth": 0.7, "barWidth": 0.97 }
+    },
+    {
+      "id": 5,
+      "type": "barchart",
+      "title": "Average coherence by domain",
+      "description": "Average baseline lexical-diversity coherence score from ETL.",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 18 },
+      "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "yesoreyeram-infinity-datasource", "uid": "${DS_INFINITY}" },
+          "type": "csv",
+          "source": "url",
+          "url": "http://localhost:8000/coherence_by_domain.csv",
+          "parser": "backend",
+          "format": "table",
+          "root_selector": "",
+          "columns": [
+            { "selector": "domain", "text": "domain", "type": "string" },
+            { "selector": "average_coherence_score", "text": "average_coherence_score", "type": "number" },
+            { "selector": "documents", "text": "documents", "type": "number" }
+          ],
+          "filters": [],
+          "csv_options": { "delimiter": ",", "skip_empty_lines": true },
+          "url_options": { "method": "GET", "data": "" },
+          "global_query_id": ""
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1, "color": { "mode": "palette-classic" } }, "overrides": [] },
+      "options": { "xField": "domain", "orientation": "horizontal", "showValue": "auto", "stacking": "none", "groupWidth": 0.7, "barWidth": 0.97 }
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": ["document-summarizer", "college-case-study"],
+  "templating": { "list": [] },
+  "time": { "from": "now-90d", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Document Summarizer Metrics",
+  "uid": "document-summarizer-metrics",
+  "version": 1,
+  "weekStart": ""
+}
