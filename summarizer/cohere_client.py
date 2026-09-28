@@ -99,7 +99,12 @@ def generate_summary(document_text: str, domain: str) -> str:
             model=MODEL,
             messages=[{"role": "user", "content": prompt}],
         )
-        return response.message.content[0].text
+        for content_item in response.message.content:
+            if getattr(content_item, "type", None) == "text":
+                generated_text = getattr(content_item, "text", None)
+                if isinstance(generated_text, str):
+                    return generated_text
+        raise RuntimeError("Cohere response did not contain a text content item.")
     except (ValueError, RuntimeError):
         raise
     except Exception as exc:

@@ -11,14 +11,21 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
+from cohere.types import (
+    TextAssistantMessageResponseContentItem,
+    ThinkingAssistantMessageResponseContentItem,
+)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _make_response(text: str):
-    """Build a minimal mock that mirrors response.message.content[0].text."""
-    content_item = SimpleNamespace(text=text)
-    message = SimpleNamespace(content=[content_item])
+    """Build a current SDK-shaped response, including preceding reasoning."""
+    content = [
+        ThinkingAssistantMessageResponseContentItem(thinking="Brief internal reasoning."),
+        TextAssistantMessageResponseContentItem(text=text),
+    ]
+    message = SimpleNamespace(content=content)
     return SimpleNamespace(message=message)
 
 
@@ -110,6 +117,15 @@ class TestGenerateSummary:
         mod, _ = self._patched_module("This is the summary.")
         result = mod.generate_summary("Document text here.", "legal")
         assert result == "This is the summary."
+
+    def test_text_after_thinking_item_is_returned(self):
+        mod, mock_client = self._patched_module("Final generated text.")
+        mock_client.chat.return_value = SimpleNamespace(message=SimpleNamespace(content=[
+            ThinkingAssistantMessageResponseContentItem(thinking="Reasoning first."),
+            TextAssistantMessageResponseContentItem(text="Final generated text."),
+        ]))
+
+        assert mod.generate_summary("Source document.", "technical") == "Final generated text."
 
     def test_correct_model_used(self):
         mod, mock_client = self._patched_module()
