@@ -12,6 +12,7 @@ if str(PROJECT_ROOT) not in sys.path:
 import gradio as gr
 
 from app.document_loader import extract_text
+from app.feedback import save_feedback
 from summarizer.cohere_client import generate_summary
 
 
@@ -27,6 +28,20 @@ def summarize_uploaded_document(file_path: str | Path | None, domain: str) -> st
         return generate_summary(document_text, domain)
     except Exception as exc:
         return f"Unable to generate summary: {exc}"
+
+
+def submit_rating(file_path: str | Path | None, domain: str, rating: int | float) -> str:
+    """Persist the selected rating for the uploaded document."""
+    if not file_path:
+        return "Please upload a document before submitting a rating."
+    try:
+        # Gradio sliders may return an integral value as a float.
+        if isinstance(rating, float) and rating.is_integer():
+            rating = int(rating)
+        save_feedback(Path(file_path).name, domain, rating)
+        return "Thank you. Your rating has been saved."
+    except (TypeError, ValueError, OSError) as exc:
+        return f"Unable to save rating: {exc}"
 
 
 def create_interface() -> gr.Blocks:
@@ -50,10 +65,17 @@ def create_interface() -> gr.Blocks:
             minimum=1, maximum=5, step=1, value=5,
             label="Rate this summary (1–5 stars)",
         )
+        submit = gr.Button("Submit Rating")
+        feedback_status = gr.Markdown()
         generate.click(
             fn=summarize_uploaded_document,
             inputs=[document, domain],
             outputs=summary,
+        )
+        submit.click(
+            fn=submit_rating,
+            inputs=[document, domain, rating],
+            outputs=feedback_status,
         )
     return interface
 
