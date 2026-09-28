@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import sys
+import time
 from pathlib import Path
 
 # Allow both ``python app/gradio_app.py`` and package imports from the project root.
@@ -14,20 +15,34 @@ import gradio as gr
 from app.document_loader import extract_text
 from app.feedback import save_feedback
 from summarizer.cohere_client import generate_summary
+from summarizer.summary_metrics import build_summary_metrics, save_summary_metrics
 
 
-def summarize_uploaded_document(file_path: str | Path | None, domain: str) -> str:
-    """Extract an uploaded document and return its generated summary."""
+def summarize_uploaded_document(
+    file_path: str | Path | None, domain: str
+) -> tuple[str, dict | None]:
+    """Summarize an upload, persist its summary metrics, and return both."""
     if not file_path:
-        return "Please upload a TXT, PDF, or DOCX document."
+        return "Please upload a TXT, PDF, or DOCX document.", None
 
     try:
+        started_at = time.perf_counter()
         document_text = extract_text(Path(file_path))
         if not document_text or not document_text.strip():
-            return "The uploaded document contains no text to summarize."
-        return generate_summary(document_text, domain)
+            return "The uploaded document contains no text to summarize.", None
+        generated_summary = generate_summary(document_text, domain)
+        processing_time_seconds = time.perf_counter() - started_at
+        metrics = build_summary_metrics(
+            document_name=Path(file_path).name,
+            domain=domain,
+            document_text=document_text,
+            summary=generated_summary,
+            processing_time_seconds=processing_time_seconds,
+        )
+        save_summary_metrics(metrics)
+        return generated_summary, metrics
     except Exception as exc:
-        return f"Unable to generate summary: {exc}"
+        return f"Unable to generate summary: {exc}", None
 
 
 def submit_rating(file_path: str | Path | None, domain: str, rating: int | float) -> str:
@@ -61,6 +76,7 @@ def create_interface() -> gr.Blocks:
             )
         generate = gr.Button("Generate Summary", variant="primary")
         summary = gr.Textbox(label="Generated Summary", lines=10, interactive=False)
+        metrics = gr.JSON(label="Summary Metrics")
         rating = gr.Slider(
             minimum=1, maximum=5, step=1, value=5,
             label="Rate this summary (1–5 stars)",
@@ -70,7 +86,7 @@ def create_interface() -> gr.Blocks:
         generate.click(
             fn=summarize_uploaded_document,
             inputs=[document, domain],
-            outputs=summary,
+            outputs=[summary, metrics],
         )
         submit.click(
             fn=submit_rating,
