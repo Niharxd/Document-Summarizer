@@ -9,6 +9,26 @@ and generates domain-specific summaries using the Cohere API. A PySpark ETL pipe
 the documents and summaries to produce structured metrics. A Gradio UI lets subject-matter experts
 review and rate summaries. Grafana dashboards visualize service health and quality metrics.
 
+## Screenshots
+
+### Generated summary
+
+Upload a document to view its domain-aware summary, document statistics, processing time, and rating controls.
+
+![DocumentAI showing a generated legal summary with document metrics and rating controls](screenshots/documentai-summary.png)
+
+### Upload a document
+
+Choose a PDF, DOCX, or TXT file and select its domain before generating a summary.
+
+![DocumentAI document upload screen with the legal domain selected](screenshots/documentai-ready.png)
+
+### Rate the result
+
+Submit a rating after reviewing the generated summary.
+
+![DocumentAI showing a submitted rating confirmation](screenshots/documentai-feedback.png)
+
 ## Technologies
 
 | Layer | Technology |
