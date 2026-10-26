@@ -1,6 +1,7 @@
 """Simple Gradio interface for domain-aware document summarization."""
 from __future__ import annotations
 
+import os
 import sys
 import time
 from pathlib import Path
@@ -378,5 +379,7 @@ def create_interface() -> gr.Blocks:
 if __name__ == "__main__":
     create_interface().launch(
         css=APP_CSS,
-        theme=gr.themes.Base(primary_hue="orange", secondary_hue="orange", neutral_hue="zinc")
+        theme=gr.themes.Base(primary_hue="orange", secondary_hue="orange", neutral_hue="zinc"),
+        server_name="0.0.0.0",
+        server_port=int(os.environ.get("PORT", "7860")),
     )
